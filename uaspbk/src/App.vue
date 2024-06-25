@@ -1,49 +1,61 @@
 <template>
-  <div class="app">
-    <!-- Header dengan menu -->
-    <header>
-      <nav>
-        <ul>
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/todos">Todos</router-link></li>
-          <li><router-link to="/posts">Posts</router-link></li>
+
+  <!-- Menu Navigation Bar -->
+  <nav class="navbar navbar-expand-lg text-white" style="background-color: #7776B3;">
+    <div class="container-fluid ">
+      <a class="navbar-brand" href="/">
+        <img src="/public/logotugas.png" alt="Logo" width="60" height="48" class="d-inline-block align-text-top">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+          
+          <li class="nav-item">
+            <a class="nav-link text-white" aria-current="page" href="/" >Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" aria-current="page" href="/todos" >Todos</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" aria-current="page" href="/posts" >Post</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" aria-current="page" href="/albums" >Album</a>
+          </li>
         </ul>
-      </nav>
-    </header>
 
-    <!-- Konten utama -->
-    <div class="main-content">
-      <h1>Daftar Kegiatan</h1>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Cari..." aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">Pencarian</button>
+        </form>
 
-      <!-- Form untuk menambahkan kegiatan -->
-      <form @submit.prevent="addActivity">
-        <input type="text" v-model="newActivity" placeholder="Tambahkan kegiatan baru" />
-        <button type="submit" style="margin-right: 10px;">Tambah</button>
-      </form>
-
-      <!-- Kotak untuk menyimpan filter -->
-      <div class="filter-box">
-        <!-- Filter untuk menampilkan semua kegiatan -->
-        <button @click="showAll">Semua</button>
-        <!-- Filter untuk menampilkan kegiatan yang belum selesai -->
-        <button @click="showPending">Belum Selesai</button>
-        <!-- Filter untuk menampilkan kegiatan yang sudah selesai -->
-        <button @click="showCompleted">Selesai</button>
       </div>
-
-      <!-- Daftar kegiatan -->
-      <ul>
-        <li v-for="(activity, index) in filteredActivities" :key="index">
-          <input type="checkbox" v-model="activity.completed" />
-          <span :class="{ completed: activity.completed }">{{ activity.name }}</span>
-          <button @click="cancelActivity(index)">Batalkan</button>
-        </li>
-      </ul>
     </div>
+  </nav>  
 
-    <!-- Routing untuk konten Todos dan Posts -->
-    <router-view></router-view>
+  <!-- Konten Halaman Dashboard -->
+  <div class="container mt-5">
+    <div class="jumbotron" v-if="shouldShowJumbotron">
+      <h1 class="display-4">Fiere Maulana</h1>
+        <p class="lead">Tugas PBK </p>
+          <hr class="my-4">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni doloribus molestiae, beatae hic sed error tempora debitis fuga dignissimos consectetur, velit quasi impedit qui quaerat et reprehenderit consequatur voluptatum inventore quas fugit. Vitae mollitia est modi omnis itaque molestias repellendus amet atque molestiae, doloribus sit! Aliquam commodi fugit nostrum vitae odio doloremque assumenda inventore ea amet fuga corporis quam, sequi dolore atque ullam, laboriosam beatae aspernatur ducimus blanditiis! At, fugiat qui? Provident cupiditate ipsa, nulla aspernatur reiciendis commodi maiores. Porro veritatis consectetur magnam sed at hic quas aliquam ut neque! Quia omnis voluptas, repudiandae veritatis quaerat atque expedita dolorum aliquid.</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Selengkapnya</a>
+    </div>
   </div>
+
+  <!-- Routing untuk konten Kehalaman Lain -->
+  <router-view></router-view>
+
+
+
+  
+
 </template>
 
 <script>
@@ -85,106 +97,10 @@ export default {
         return this.activities;
       }
     },
+    shouldShowJumbotron() {
+      // Show jumbotron if not on the root path '/'
+      return this.$route.path == '/';
+    },
   },
 };
 </script>
-
-<style scoped>
-body {
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.app {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-header {
-  background-color: #333;
-  padding: 10px 0;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-nav ul li {
-  display: inline-block;
-  margin-right: 20px;
-}
-
-nav ul li a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 5px 10px;
-}
-
-nav ul li a:hover {
-  background-color: #555;
-  border-radius: 5px;
-}
-
-.main-content {
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-form {
-  margin-bottom: 20px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.completed {
-  text-decoration: line-through;
-}
-
-.filter-box {
-  margin-bottom: 20px;
-}
-
-.filter-box button {
-  margin-right: 10px;
-}
-</style>
